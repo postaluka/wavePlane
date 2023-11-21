@@ -30,40 +30,6 @@ export default class Plane
         this.randoms = new Float32Array(this.count)
         this.noise = new Float32Array(this.count)
 
-        for (let i = 0; i < this.count; i++)
-        {
-            this.randoms[i] = Math.random()
-
-        }
-
-        console.log(this.geometry.attributes.position.array);
-
-        let j = 0
-
-        for (let i = 0; i < this.count; i++)
-        {
-
-            let posX, posY, posZ
-
-            posX = this.pointsCoordinates[i]
-            posY = this.pointsCoordinates[i + 1]
-            posZ = this.pointsCoordinates[i + 2]
-
-            // console.log(posX, posY, posZ);
-
-
-            const n = utils.random.noise3D(posX, posY, this.time.elapsed, 100, 0.01)
-
-            this.noise[j] = n
-            j++
-
-        }
-
-
-
-        this.geometry.setAttribute('aRandom', new THREE.BufferAttribute(this.randoms, 1))
-        this.geometry.setAttribute('aNoise', new THREE.BufferAttribute(this.noise, 1))
-
         this.debug()
 
     }
@@ -93,7 +59,6 @@ export default class Plane
 
     update()
     {
-        const now = Date.now / 300
         for (let i = 0; i < this.count; i++)
         {
             const x = this.geometry.attributes.position.getX(i)
@@ -101,7 +66,6 @@ export default class Plane
             const z = this.geometry.attributes.position.getZ(i)
 
             const n = utils.random.noise3D(x, y, this.time.elapsed * PARAMS.speed, PARAMS.freq, PARAMS.amp)
-            // const xsin = Math.sin(-x + this.time.elapsed * 0.003)
             this.geometry.attributes.position.setZ(i, n)
         }
         // this.geometry.computeVertexNormals()
